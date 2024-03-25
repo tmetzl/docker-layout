@@ -1,5 +1,0 @@
-ARG E2XGRADER_MODE=student
-FROM $IMAGE_SOURCE
-
-USER $NB_USER
-RUN e2xgrader activate $E2XGRADER_MODE --sys-prefix
