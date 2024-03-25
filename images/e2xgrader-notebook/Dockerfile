@@ -4,6 +4,7 @@ ARG E2XGRADER_BRANCH=""
 ARG E2XGRADER_MODE=student
 FROM $IMAGE_SOURCE
 
+# Inherit from any image, then just install e2xgrader and activate a mode
 LABEL maintainer="e2x project H-BRS <e2x@inf.h-brs.de>"
 
 USER $NB_USER
