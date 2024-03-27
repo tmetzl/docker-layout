@@ -88,6 +88,9 @@ jobs:
             --build-arg FROM_REPO=$FROM_REPO \
             --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH \
             --progress=plain
+      - name: List images
+        if: ${{ inputs.force_build }}
+        run: |
           docker images
             
             
