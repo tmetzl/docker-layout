@@ -1,3 +1,5 @@
+name: Build e2xgrader image and activate a specific mode
+
 on:
   workflow_dispatch:
     inputs: 
