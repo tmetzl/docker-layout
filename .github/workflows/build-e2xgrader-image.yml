@@ -57,6 +57,7 @@ jobs:
           IMAGE_PATH: "images/e2xgrader-notebook"
           IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
         run: |
+          echo "Building docker image with FROM_REPO=$FROM_REPO"
           cd $IMAGE_PATH
           docker build -t $IMAGE_TAG . \
             --build-arg IMAGE_SOURCE=$BASE_IMAGE \
