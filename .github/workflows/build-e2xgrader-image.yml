@@ -1,0 +1,66 @@
+on:
+  workflow_dispatch:
+    inputs: 
+      force_build:
+        description: If the build should be forced even if there are no changes
+        type: boolean
+        required: false
+        default: false
+      image_path:
+        description: The path to the Dockerfile of the image to build
+        type: string
+        required: true
+      base_image:
+        description: The full name and tag of the base image to build from
+        type: string
+        required: true
+      image_name:
+        description: The name of the image in the tag after building
+        type: string
+        required: true
+      image_tag:
+        description: The tag of the image in the tag after building
+        type: string
+        required: true
+      e2xgrader_mode:
+        description: Which e2xgrader mode to activate
+        type: string
+        required: true
+      e2xgrader_version:
+        description: If a specific e2xgrader version should be installed from PyPi
+        type: string
+        required: false
+        default: ""
+      install_from_repo:
+        description: If e2xgrader should be install from github instead of PyPi
+        type: boolean
+        required: false
+        default: false
+      e2xgrader_branch:
+        description: Which e2xgrader branch or tag to install from. Only takes effect if install_from_repo is not "false"
+        type: string
+        required: false
+        default: "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build image
+        if: ${{ inputs.force_build }}
+        env:
+          FROM_REPO: ${{ inputs.from_repo }}
+          E2XGRADER_MODE: ${{ inputs.e2xgrader_mode }}
+          E2XGRADER_VERSION: ${{ inputs.e2xgrader_version }}
+          E2XGRADER_BRANCH: ${{ inputs.e2xgrader_branch }}
+          BASE_IMAGE: ${{ inputs.base_image }}
+          IMAGE_PATH: ${{ inputs.image_path }}
+          IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
+        run: |
+          cd $IMAGE_PATH
+          ls -al
+        
+      
+      
