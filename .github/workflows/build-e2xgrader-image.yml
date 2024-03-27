@@ -46,6 +46,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Pull base image
+        if: ${{ inputs.force_build }}
+        env:
+          BASE_IMAGE: ${{ inputs.base_image }}
+        run: |
+          docker pull $BASE_IMAGE
       - name: Build image
         if: ${{ inputs.force_build }}
         env:
