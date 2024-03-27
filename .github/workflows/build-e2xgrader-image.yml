@@ -71,7 +71,7 @@ jobs:
           E2XGRADER_MODE: ${{ inputs.e2xgrader_mode }}
           E2XGRADER_VERSION: ${{ inputs.e2xgrader_version }}
           E2XGRADER_BRANCH: ${{ inputs.e2xgrader_branch }}
-          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ input.base_image_tag }}
+          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
           IMAGE_PATH: "images/e2xgrader-notebook"
         run: |
           echo "Building image: $IMAGE_TAG"
