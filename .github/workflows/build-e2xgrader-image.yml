@@ -49,7 +49,7 @@ jobs:
       - name: Build image
         if: ${{ inputs.force_build }}
         env:
-          FROM_REPO: ${{ inputs.from_repo }}
+          FROM_REPO: ${{ inputs.install_from_repo }}
           E2XGRADER_MODE: ${{ inputs.e2xgrader_mode }}
           E2XGRADER_VERSION: ${{ inputs.e2xgrader_version }}
           E2XGRADER_BRANCH: ${{ inputs.e2xgrader_branch }}
