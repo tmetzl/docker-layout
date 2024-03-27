@@ -69,7 +69,6 @@ jobs:
           else
             echo "IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           fi
-          echo "The image tag is $IMAGE_TAG"
       - name: Build image
         if: ${{ inputs.force_build }}
         env:
