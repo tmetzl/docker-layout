@@ -8,10 +8,6 @@ on:
         type: boolean
         required: false
         default: false
-      image_path:
-        description: The path to the Dockerfile of the image to build
-        type: string
-        required: true
       base_image:
         description: The full name and tag of the base image to build from
         type: string
@@ -58,11 +54,12 @@ jobs:
           E2XGRADER_VERSION: ${{ inputs.e2xgrader_version }}
           E2XGRADER_BRANCH: ${{ inputs.e2xgrader_branch }}
           BASE_IMAGE: ${{ inputs.base_image }}
-          IMAGE_PATH: ${{ inputs.image_path }}
+          IMAGE_PATH: "images/e2xgrader-notebook"
           IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
         run: |
           cd $IMAGE_PATH
           ls -al
+          echo $IMAGE_TAG
         
       
       
