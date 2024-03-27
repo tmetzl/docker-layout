@@ -56,6 +56,13 @@ jobs:
           BASE_IMAGE: ${{ inputs.base_image }}
         run: |
           docker pull $BASE_IMAGE
+      - name: Set image tag
+        run: |
+          if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
+            echo "MY_IMAGE_TAG=exam-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+          else
+            echo "MY_IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+          fi
       - name: Build image
         if: ${{ inputs.force_build }}
         env:
@@ -68,6 +75,7 @@ jobs:
           IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
         run: |
           echo "Building docker image with FROM_REPO=$FROM_REPO"
+          echo "Our image name will be $MY_IMAGE_TAG ?"
           cd $IMAGE_PATH
           docker build -t $IMAGE_TAG . \
             --build-arg IMAGE_SOURCE=$BASE_IMAGE \
@@ -77,24 +85,6 @@ jobs:
             --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH \
             --progress=plain
           docker images
-      - name: Start docker container
-        if: ${{ inputs.force_build }}
-        env:
-          IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
-        run: |
-          CONTAINER_ID=$(docker run -d -p 8888:8888 $IMAGE_TAG)
-          echo "Container started with ID: $CONTAINER_ID"
-      - name: Wait for container to be ready
-        if: ${{ inputs.force_build }}
-        run: |
-          while ! curl -s http://localhost:8888 >/dev/null; do
-              echo "Waiting for container to be ready..."
-              sleep 5
-          done        
-      - name: Stop the container
-        if: ${{ inputs.force_build }}
-        run: |
-          docker stop $CONTAINER_ID
             
             
             
