@@ -8,16 +8,17 @@ on:
         type: boolean
         required: false
         default: false
-      base_image:
-        description: The full name and tag of the base image to build from
+      base_image_name:
+        description: The name of the base image to build from
         type: string
         required: true
-      image_name:
-        description: The name of the image in the tag after building
+      base_image_tag:
+        description: The tag of the base image to build from
         type: string
-        required: true
+        required: false
+        default: latest
       image_tag:
-        description: The tag of the image in the tag after building
+        description: The tag of the image we build. E.g. latest
         type: string
         required: true
       e2xgrader_mode:
@@ -53,15 +54,15 @@ jobs:
       - name: Pull base image
         if: ${{ inputs.force_build }}
         env:
-          BASE_IMAGE: ${{ inputs.base_image }}
+          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ input.base_image_tag }}
         run: |
           docker pull $BASE_IMAGE
       - name: Set image tag
         run: |
           if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
-            echo "IMAGE_TAG=exam-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=exam-${{ inputs.base_image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.base_image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           fi
       - name: Build image
         if: ${{ inputs.force_build }}
@@ -70,10 +71,10 @@ jobs:
           E2XGRADER_MODE: ${{ inputs.e2xgrader_mode }}
           E2XGRADER_VERSION: ${{ inputs.e2xgrader_version }}
           E2XGRADER_BRANCH: ${{ inputs.e2xgrader_branch }}
-          BASE_IMAGE: ${{ inputs.base_image }}
+          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ input.base_image_tag }}
           IMAGE_PATH: "images/e2xgrader-notebook"
         run: |
-          echo "Building docker: $IMAGE_TAG"
+          echo "Building image: $IMAGE_TAG"
           cd $IMAGE_PATH
           docker build -t $IMAGE_TAG . \
             --build-arg IMAGE_SOURCE=$BASE_IMAGE \
