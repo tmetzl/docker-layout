@@ -55,7 +55,7 @@ jobs:
       - name: Pull base image
         if: ${{ inputs.force_build }}
         env:
-          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ input.base_image_tag }}
+          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
         run: |
           docker pull $BASE_IMAGE
       - name: Set image tag
