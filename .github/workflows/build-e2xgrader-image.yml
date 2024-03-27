@@ -22,8 +22,12 @@ on:
         required: true
       e2xgrader_mode:
         description: Which e2xgrader mode to activate
-        type: string
+        type: choice
         required: true
+        options:
+        - student
+        - student_exam
+        - teacher
       e2xgrader_version:
         description: If a specific e2xgrader version should be installed from PyPi
         type: string
