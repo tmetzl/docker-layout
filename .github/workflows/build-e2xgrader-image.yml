@@ -58,8 +58,16 @@ jobs:
           IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
         run: |
           cd $IMAGE_PATH
-          ls -al
-          echo $IMAGE_TAG
+          docker build -t $IMAGE_TAG . \
+            --build-arg IMAGE_SOURCE=$BASE_IMAGE \
+            --build-arg E2XGRADER_MODE=$E2XGRADER_MODE \
+            --build-arg E2XGRADER_VERSION=$E2XGRADER_VERSION \
+            --build-arg FROM_REPO=$FROM_REPO \
+            --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH
+          docker images
+            
+            
+            
         
       
       
