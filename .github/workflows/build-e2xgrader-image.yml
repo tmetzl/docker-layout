@@ -20,7 +20,8 @@ on:
       image_tag:
         description: The tag of the image we build. E.g. latest
         type: string
-        required: true
+        required: false
+        default: latest
       e2xgrader_mode:
         description: Which e2xgrader mode to activate
         type: choice
