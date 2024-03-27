@@ -77,6 +77,16 @@ jobs:
             --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH \
             --progress=plain
           docker images
+      - name: Run image
+        if: ${{ inputs.force_build }}
+        env:
+          IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
+        run: |
+          docker run -it --rm -d -p 8888:8888 $IMAGE_TAG
+      - name: Stop image
+        if: ${{ inputs.force_build }}
+        run: |
+          docker stop $(docker container ls -q)
             
             
             
