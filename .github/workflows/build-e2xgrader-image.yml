@@ -64,7 +64,8 @@ jobs:
             --build-arg E2XGRADER_MODE=$E2XGRADER_MODE \
             --build-arg E2XGRADER_VERSION=$E2XGRADER_VERSION \
             --build-arg FROM_REPO=$FROM_REPO \
-            --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH
+            --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH \
+            --progress=plain
           docker images
             
             
