@@ -17,6 +17,10 @@ on:
         type: string
         required: false
         default: latest
+      image_name:
+        description: The name of the image we build.
+        type: string
+        required: true
       image_tag:
         description: The tag of the image we build. E.g. latest
         type: string
@@ -61,9 +65,9 @@ jobs:
       - name: Set image tag
         run: |
           if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
-            echo "IMAGE_TAG=exam-${{ inputs.base_image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=exam-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.base_image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ inputs.e2xgrader_mode }}-${{ inputs.image_name }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           fi
       - name: Build image
         if: ${{ inputs.force_build }}
