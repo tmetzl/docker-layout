@@ -65,9 +65,9 @@ jobs:
       - name: Set image tag
         run: |
           if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
-            echo "IMAGE_TAG=${{ inputs.image_name }}:${{ inputs.image_tag }}-exam" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ inputs.image_name }}-exam:${{ inputs.image_tag }}" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=${{ inputs.image_name }}:${{ inputs.image_tag }}-${{ inputs.e2xgrader_mode }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ inputs.image_name }}-${{ inputs.e2xgrader_mode }}:${{ inputs.image_tag }}" >> $GITHUB_ENV
           fi
       - name: Build image
         if: ${{ inputs.force_build }}
