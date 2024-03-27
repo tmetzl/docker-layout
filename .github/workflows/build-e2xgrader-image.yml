@@ -77,16 +77,24 @@ jobs:
             --build-arg E2XGRADER_BRANCH=$E2XGRADER_BRANCH \
             --progress=plain
           docker images
-      - name: Run image
+      - name: Start docker container
         if: ${{ inputs.force_build }}
         env:
           IMAGE_TAG: ${{ inputs.image_name }}:${{ inputs.image_tag }}
         run: |
-          docker run -it --rm -d -p 8888:8888 $IMAGE_TAG
-      - name: Stop image
+          CONTAINER_ID=$(docker run -d -p 8888:8888 $IMAGE_TAG)
+          echo "Container started with ID: $CONTAINER_ID"
+      - name: Wait for container to be ready
         if: ${{ inputs.force_build }}
         run: |
-          docker stop $(docker container ls -q)
+          while ! docker exec $CONTAINER_ID curl -s http://localhost:8888 >/dev/null; do
+              echo "Waiting for container to be ready..."
+              sleep 5
+          done        
+      - name: Stop the container
+        if: ${{ inputs.force_build }}
+        run: |
+          docker stop $CONTAINER_ID
             
             
             
