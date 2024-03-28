@@ -82,7 +82,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: images/e2xgrader-notebook
-          push: false
+          push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ steps.set_image_tag.outputs.image_tag }}
           build-args: |
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
