@@ -1,0 +1,96 @@
+name: Build e2xgrader image using docker actions
+
+on:
+  workflow_dispatch:
+    inputs: 
+      force_build:
+        description: If the build should be forced even if there are no changes
+        type: boolean
+        required: false
+        default: false
+      base_image_name:
+        description: The name of the base image to build from
+        type: string
+        required: true
+      base_image_tag:
+        description: The tag of the base image to build from
+        type: string
+        required: false
+        default: latest
+      image_name:
+        description: The name of the image we build.
+        type: string
+        required: true
+      image_tag:
+        description: The tag of the image we build. E.g. latest
+        type: string
+        required: false
+        default: latest
+      e2xgrader_mode:
+        description: Which e2xgrader mode to activate
+        type: choice
+        required: true
+        options:
+        - student
+        - student_exam
+        - teacher
+      e2xgrader_version:
+        description: If a specific e2xgrader version should be installed from PyPi
+        type: string
+        required: false
+        default: ""
+      install_from_repo:
+        description: If e2xgrader should be install from github instead of PyPi
+        type: boolean
+        required: false
+        default: false
+      e2xgrader_branch:
+        description: Which e2xgrader branch or tag to install from. Only takes effect if install_from_repo is not "false"
+        type: string
+        required: false
+        default: "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Pull base image
+        if: ${{ inputs.force_build }}
+        env:
+          BASE_IMAGE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
+        run: |
+          docker pull $BASE_IMAGE
+      - name: Set image tag
+        id: set_image_tag
+        run: |
+          if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
+            echo "::set-output name=image_tag::${{ inputs.image_name }}-exam:${{ inputs.image_tag }}"
+          else
+            echo "::set-output name=image_tag::${{ inputs.image_name }}-${{ inputs.e2xgrader_mode }}:${{ inputs.image_tag }}"
+          fi
+      - name: Build Docker image
+        if: ${{ inputs.force_build }}
+        id: build_image
+        uses: docker/build-push-action@v2
+        with:
+          context: images/e2xgrader-notebook
+          file: ./Dockerfile
+          push: false
+          build-args: |
+            BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
+            E2XGRADER_MODE=${{ inputs.e2xgrader_mode }}
+            E2XGRADER_VERSION=${{ inputs.e2xgrader_version }}
+            E2XGRADER_BRANCH=${{ inputs.e2xgrader_branch }}
+            IMAGE_TAG=${{ steps.set_image_tag.outputs.image_tag }}
+      - name: List images
+        if: ${{ inputs.force_build }}
+        run: |
+          docker images
+            
+            
+            
+        
+      
+      
