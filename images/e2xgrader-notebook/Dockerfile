@@ -11,6 +11,16 @@ LABEL maintainer="e2x project H-BRS <e2x@inf.h-brs.de>"
 
 USER $NB_USER
 
+# Install requirements shared between all modes
+RUN echo "Installing common requirements"
+COPY common_requirements.txt /tmp/common_requirements.txt
+RUN pip install --no-cache-dir -r /tmp/common_requirements.txt
+
+# Install mode specific requirements
+RUN echo "Installing requirements for ${E2XGRADER_MODE}"
+COPY ${E2XGRADER_MODE}_requirements.txt /tmp/mode_requirements.txt
+RUN pip install --no-cache-dir -r /tmp/mode_requirements.txt
+    
 # Install e2xgrader
 RUN if [ "$FROM_REPO" = "false" ] && [ -z "$E2XGRADER_VERSION" ]; then \
         echo "Installing e2xgrader from default source..."; \
