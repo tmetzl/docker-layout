@@ -66,7 +66,7 @@ jobs:
           build-args: |
             IMAGE_SOURCE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
       - name: List images
-        if: ${{ inputs.force_build }}
+        if: ${{ inputs.force_build || steps.changes.outputs.image_changed == 'true' }}
         run: |
           docker images
       - name: Set output (image was built)
