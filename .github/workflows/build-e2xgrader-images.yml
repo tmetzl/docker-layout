@@ -41,6 +41,19 @@ on:
         type: string
         required: false
         default: "main"
+      push:
+        description: If the image should be pushed to the registry
+        type: boolean
+        required: false
+        default: false
+      registry:
+        description: The name of the container registry to use
+        type: choice
+        required: false
+        default: ghcr.io
+        options:
+         - ghcr.io
+         - quay.io
 
 jobs:
   build:
@@ -70,7 +83,7 @@ jobs:
         with:
           context: images/e2xgrader-notebook
           push: false
-          tags: ${{ steps.set_image_tag.outputs.image_tag }}
+          tags: ${{ inputs.registry }}/${{ github.repository_owner }}/${{ github.repository }}/${{ steps.set_image_tag.outputs.image_tag }}
           build-args: |
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
             E2XGRADER_MODE=${{ matrix.e2xgrader_mode }}
