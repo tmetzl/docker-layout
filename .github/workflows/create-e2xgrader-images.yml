@@ -66,10 +66,14 @@ jobs:
         id: set_image_tag
         run: |
           if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
-            echo "::set-output name=image_tag::${{ inputs.image_name }}-exam:${{ inputs.image_tag }}"
+            echo "image_tag=${{ inputs.image_name }}-exam:${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=image_tag::${{ inputs.image_name }}-${{ inputs.e2xgrader_mode }}:${{ inputs.image_tag }}"
+            echo "image_tag=${{ inputs.image_name }}-${{ inputs.e2xgrader_mode }}:${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
           fi
+      - name: Print image tag
+        id: print_image_tag
+        run: |
+          echo ${{ steps.set_image_tag.outputs.image_tag }}
       - name: Build Docker image
         if: ${{ inputs.force_build }}
         id: build_image
