@@ -82,7 +82,7 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ steps.set_image_tag.outputs.image_tag }}
           build-args: |
-            BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
+            IMAGE_SOURCE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
             E2XGRADER_MODE=${{ matrix.e2xgrader_mode }}
             E2XGRADER_VERSION=${{ inputs.e2xgrader_version }}
             FROM_REPO=${{ inputs.e2xgrader_installation_source == 'github' }}
