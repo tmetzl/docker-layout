@@ -73,4 +73,3 @@ jobs:
         if: ${{ inputs.force_build || steps.changes.outputs.image_changed == 'true' }}
         run: |
           echo "image_built=true" >> $GITHUB_OUTPUT
-            - name: Set output (image was built)
