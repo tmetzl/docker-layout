@@ -60,7 +60,7 @@ jobs:
       image_name: datascience-notebook
       image_tag: ${{ inputs.tag }}
       registry: ${{ inputs.registry }}
-      base_image_name: ${{ inputs.registry }}/${{ github.repository }}/minimal-notebook
+      base_image_name: ${{ inputs.registry }}/digiklausur/docker-stacks/minimal-notebook
       base_image_tag: ${{ inputs.tag }}      
       push: ${{ inputs.push }}
 
@@ -72,7 +72,7 @@ jobs:
       registry: ${{ inputs.registry }}
       image_name: datascience-notebook
       image_tag: ${{ inputs.tag }}
-      base_image_name: ${{ inputs.registry }}/${{ github.repository }}/datascience-notebook
+      base_image_name: ${{ inputs.registry }}/digiklausur/docker-stacks/datascience-notebook
       base_image_tag: ${{ inputs.tag }}
       push: ${{ inputs.push }}
       e2xgrader_installation_source: ${{ inputs.e2xgrader_installation_source }}
