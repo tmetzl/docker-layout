@@ -60,7 +60,7 @@ jobs:
         id: build_image
         uses: docker/build-push-action@v5
         with:
-          context: images/e2xgrader-notebook
+          context: images/${{ inputs.image_name }}
           push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
           build-args: |
