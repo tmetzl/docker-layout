@@ -76,7 +76,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: images/e2xgrader-notebook
-          file: ./Dockerfile
           push: false
           build-args: |
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
