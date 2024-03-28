@@ -67,7 +67,7 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
           build-args: |
-            IMAGE_SOURCE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
+            IMAGE_SOURCE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
       - name: List images
         if: ${{ inputs.force_build || steps.changes.outputs.image_changed == 'true' }}
         run: |
