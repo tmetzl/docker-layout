@@ -88,6 +88,7 @@ jobs:
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
             E2XGRADER_MODE=${{ matrix.e2xgrader_mode }}
             E2XGRADER_VERSION=${{ inputs.e2xgrader_version }}
+            FROM_REPO=${{ inputs.from_repo }}
             E2XGRADER_BRANCH=${{ inputs.e2xgrader_branch }}
       - name: List images
         if: ${{ inputs.force_build }}
