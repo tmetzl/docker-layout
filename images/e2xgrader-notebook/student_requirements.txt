@@ -1,0 +1,1 @@
+java_syntax_kernel @ git+https://github.com/DigiKlausur/java_syntax_kernel@main
