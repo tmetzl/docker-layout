@@ -47,6 +47,9 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+      - name: Print the base image
+        run: |
+          echo "The base image to build from is ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}"
       - name: Check if files changed
         if: ${{ ! inputs.force_build }}
         uses: dorny/paths-filter@v3
