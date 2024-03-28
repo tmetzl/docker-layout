@@ -1,0 +1,2 @@
+pdf_feedback_exporter @ git+https://github.com/DigiKlausur/pdf_feedback_exporter@main
+weasyprint
