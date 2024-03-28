@@ -1,4 +1,4 @@
-name: Build e2xgrader image for all modes
+name: Print the environment
 
 on:
   workflow_dispatch:
