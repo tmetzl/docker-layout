@@ -26,14 +26,6 @@ on:
         type: string
         required: false
         default: latest
-      e2xgrader_mode:
-        description: Which e2xgrader mode to activate
-        type: choice
-        required: true
-        options:
-        - student
-        - student_exam
-        - teacher
       e2xgrader_version:
         description: If a specific e2xgrader version should be installed from PyPi
         type: string
@@ -52,6 +44,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        e2xgrader_mode: [student, student_exam, teacher]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -65,10 +60,10 @@ jobs:
       - name: Set image tag
         id: set_image_tag
         run: |
-          if [ "${{ inputs.e2xgrader_mode }}" == "student_exam" ]; then
+          if [ "${{ matrix.e2xgrader_mode }}" == "student_exam" ]; then
             echo "image_tag=${{ inputs.image_name }}-exam:${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
           else
-            echo "image_tag=${{ inputs.image_name }}-${{ inputs.e2xgrader_mode }}:${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
+            echo "image_tag=${{ inputs.image_name }}-${{ matrix.e2xgrader_mode }}:${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
           fi
       - name: Print image tag
         id: print_image_tag
@@ -84,7 +79,7 @@ jobs:
           tags: ${{ steps.set_image_tag.outputs.image_tag }}
           build-args: |
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
-            E2XGRADER_MODE=${{ inputs.e2xgrader_mode }}
+            E2XGRADER_MODE=${{ matrix.e2xgrader_mode }}
             E2XGRADER_VERSION=${{ inputs.e2xgrader_version }}
             E2XGRADER_BRANCH=${{ inputs.e2xgrader_branch }}
       - name: List images
