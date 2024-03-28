@@ -54,7 +54,7 @@ jobs:
         with:
           filters: |
             image_changed:
-              images/${{ inputs.image }}/**
+              images/${{ inputs.image_name }}/**
       - name: Build Docker image
         if: ${{ inputs.force_build || steps.changes.outputs.image_changed == 'true' }}
         id: build_image
@@ -64,7 +64,7 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
           build_args: |
-            IMAGE_SOURCE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tagb }}
+            IMAGE_SOURCE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
       - name: List images
         if: ${{ inputs.force_build }}
         run: |
