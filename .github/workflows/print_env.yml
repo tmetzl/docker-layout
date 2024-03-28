@@ -1,0 +1,12 @@
+name: Build e2xgrader image for all modes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print_env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print environment
+        run: env | sort
+      
