@@ -63,7 +63,7 @@ jobs:
           context: images/e2xgrader-notebook
           push: ${{ inputs.push }}
           tags: ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
-          build_args: |
+          build-args: |
             IMAGE_SOURCE: ${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
       - name: List images
         if: ${{ inputs.force_build }}
