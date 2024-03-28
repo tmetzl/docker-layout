@@ -26,18 +26,21 @@ on:
         type: string
         required: false
         default: latest
+      e2xgrader_installation_source:
+        description: Where to install e2xgrader from
+        type: choice
+        required: false
+        default: pypi
+        options:
+         - pypi
+         - github
       e2xgrader_version:
         description: Use a specific e2xgrader version from PyPi
         type: string
         required: false
         default: ""
-      install_from_repo:
-        description: Install e2xgrader from github instead of PyPi
-        type: boolean
-        required: false
-        default: false
       e2xgrader_branch:
-        description: Which e2xgrader branch or tag to install from. Only takes effect if install_from_repo is not "false"
+        description: Which e2xgrader branch or tag to install from. Only takes effect if e2xgrader_installation_source is "github"
         type: string
         required: false
         default: "main"
@@ -88,7 +91,7 @@ jobs:
             BASE_IMAGE=${{ inputs.base_image_name }}:${{ inputs.base_image_tag }}
             E2XGRADER_MODE=${{ matrix.e2xgrader_mode }}
             E2XGRADER_VERSION=${{ inputs.e2xgrader_version }}
-            FROM_REPO=${{ inputs.from_repo }}
+            FROM_REPO=${{ inputs.e2xgrader_installation_source == 'github' }}
             E2XGRADER_BRANCH=${{ inputs.e2xgrader_branch }}
       - name: List images
         if: ${{ inputs.force_build }}
